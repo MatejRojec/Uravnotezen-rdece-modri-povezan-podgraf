@@ -1,0 +1,1 @@
+# Uravnote-en-rde-e-modri-povezan-podgraf
