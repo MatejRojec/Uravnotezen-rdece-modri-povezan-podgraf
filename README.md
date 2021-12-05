@@ -1,1 +1,1 @@
-# Uravnote-en-rde-e-modri-povezan-podgraf
+# Uravnotezen-rdece-modri-povezan-podgraf
