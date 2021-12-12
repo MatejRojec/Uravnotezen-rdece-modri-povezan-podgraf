@@ -1,0 +1,89 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage[slovene]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+
+\theoremstyle{definition}
+\newtheorem{definicija}{Definicija}
+\newtheorem{izrek}{Izrek}
+\newtheorem{trditev}{Trditev}
+\newtheorem{lema}{Lema}
+\newtheorem{primer}{Primer}
+
+
+
+\begin{document}
+    \begin{titlepage}
+        \begin{center}
+            \vspace*{1cm}
+            
+            \LARGE
+            FINANČNI PRAKTIKU
+                
+            \vspace{1cm}
+            \huge
+            \textbf{Uravnotežen rdeče-modri povezan podgraf}
+                
+            \vspace{1cm}
+                
+            \Large   
+            Matej Rojec, Ana Marija Belingar, Vito Rozman 
+        
+            
+            \vspace{2cm}
+    
+            %\includegraphics[scale=0.7]{logo_fmf_uni-lj_sl.pdf}
+                
+                    
+        \end{center}
+    \end{titlepage}
+
+    %\tableofcontents
+    %\listoftables
+    \section{Predstavitev problema}
+
+    Naj bo $G = (V, E)$ graf. Vsako vozlišče $v \in V $ je obarvano rdeče ali modro. 
+    Najti želimo največji povezani podgraf $G' = (V', E')$, ki ima enako število rdečih in modrih vozlišč.
+    Velikost podgrafa je število njegovih vozlišč. Ta problem je v splošnem NP-težak, kar pomeni da ga nemoremo
+    rešiti v polinomskem času.\\
+    Osredotočili se bomo na optimalen algoritem za reševanje problema na mrežah oblike $1xn$ (pot), $2xn$, 
+    $3xn$ in $4xn$.\\
+    Naš algoritrm bomo testirali na grafih, kjer bomo vožlišča obarvali rdeče z verjetnostjo $p \in (0,1)$ 
+    in modro z verjetnostjo $1 - p$. 
+    
+    \subsection{Osnovni pojmi}
+    
+    \begin{definicija}
+        Naj bo $G=(V,E)$ graf in naj bo $S \subseteq V$ podmnožica vozlišča grafa $G$. 
+        Graf $G[S]$ je induciran podgraf grafa $G$, natanko takrat ko $\forall u, v \in S$ velja,
+        da sta $u$ in $v$ sosednja v $G[S]$, čee sta sosednja v $G$.
+    \end{definicija}
+
+    %V našem problemu 
+    %proučujemo graf $G=(V,E)$, ki ima vsako vozlišče obarvano bodisi rdeče bodisi modro. 
+    %(Opomba: barva dodelitev ne ustreza samo dvodelnim grafom. Torej dopustimo tudi, 
+    %da sta sosednji vozlišči iste barve.) Iščemo največjo podmnožico $V'\subseteq V$, ki je barvno uravnotežena 
+    %(ima $\frac{|V'|}{2}$ rdečih in $\frac{|V'|}{2}$ modrih oglišč) in taka, da je inducirani podgraf 
+    %$G[V'$s] povezan. To imenujemo problem največjega uravnoteženega povezanega podgrafa.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}  
