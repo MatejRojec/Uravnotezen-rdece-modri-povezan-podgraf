@@ -47,10 +47,10 @@
 
     Naj bo $G = (V, E)$ graf. Vsako vozlišče $v \in V $ je obarvano rdeče ali modro. 
     Najti želimo največji povezani podgraf $G' = (V', E')$, ki ima enako število rdečih in modrih vozlišč.
-    Velikost podgrafa je število njegovih vozlišč. Ta problem je v splošnem NP-težak, kar pomeni da ga nemoremo
+    Velikost podgrafa je število njegovih vozlišč. Ta problem je v splošnem NP-težek, kar pomeni da ga ne moremo
     rešiti v polinomskem času.\\
-    Osredotočili se bomo na optimalen algoritem za reševanje problema na mrežah oblike $1xn$ (pot), $2xn$, 
-    $3xn$ in $4xn$.\\
+    Osredotočili se bomo na optimalen algoritem za reševanje problema na mrežah oblike $1 \times n$ (pot), $2 \times n$, 
+    $3 \times n$ in $4 \times n$.\\
     Naš algoritrm bomo testirali na grafih, kjer bomo vožlišča obarvali rdeče z verjetnostjo $p \in (0,1)$ 
     in modro z verjetnostjo $1 - p$. 
     
@@ -59,9 +59,14 @@
     \begin{definicija}
         Naj bo $G=(V,E)$ graf in naj bo $S \subseteq V$ podmnožica vozlišča grafa $G$. 
         Graf $G[S]$ je induciran podgraf grafa $G$, natanko takrat ko $\forall u, v \in S$ velja,
-        da sta $u$ in $v$ sosednja v $G[S]$, čee sta sosednja v $G$.
+        da sta $u$ in $v$ sosednja v $G[S]$, natanko takrat ko sta sosednja v $G$.
     \end{definicija}
 
+    V našem primeru bomo iskali tak inducirani podgraf $G' = (V', E')$ grafa $G = (V, E)$, kjer lahko možico volzlišč
+    zapišemo kot 
+        $$ V' = V_{R} \cup V_{B},$$
+    za katero velja $ V_{R} \cap  V_{B} = \emptyset $ in $|V_{R}| = |V_{B}| = \frac{|V'|}{2}$. Tako bomo dobil
+    uravnotežen povezan graf z enako števlo rdečih in modrih vozlišč.
     %V našem problemu 
     %proučujemo graf $G=(V,E)$, ki ima vsako vozlišče obarvano bodisi rdeče bodisi modro. 
     %(Opomba: barva dodelitev ne ustreza samo dvodelnim grafom. Torej dopustimo tudi, 
