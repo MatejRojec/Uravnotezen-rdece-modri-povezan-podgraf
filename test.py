@@ -7,7 +7,6 @@ def naredi_pot(n):
     return(pot)
 
 
-naredi_pot(10)
 
 
 
