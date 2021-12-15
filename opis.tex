@@ -5,6 +5,8 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage{relsize}
+
 
 \theoremstyle{definition}
 \newtheorem{definicija}{Definicija}
@@ -13,7 +15,9 @@
 \newtheorem{lema}{Lema}
 \newtheorem{primer}{Primer}
 
-
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\V}{\mathcal{V}}
 
 \begin{document}
     \begin{titlepage}
@@ -75,7 +79,30 @@
     %$G[V'$s] povezan. To imenujemo problem največjega uravnoteženega povezanega podgrafa.
 
 
+  %V našem problemu 
+    %proučujemo graf $G=(V,E)$, ki ima vsako vozlišče obarvano bodisi rdeče bodisi modro. 
+    %(Opomba: barva dodelitev ne ustreza samo dvodelnim grafom. Torej dopustimo tudi, 
+    %da sta sosednji vozlišči iste barve.) Iščemo največjo podmnožico $V'\subseteq V$, ki je barvno uravnotežena 
+    %(ima $\frac{|V'|}{2}$ rdečih in $\frac{|V'|}{2}$ modrih oglišč) in taka, da je inducirani podgraf 
+    %$G[V'$s] povezan. To imenujemo problem največjega uravnoteženega povezanega podgrafa.
 
+    % Vito, namesto navadni G, V, E uporabi raje tiste iz \mathcal. Definiral sem ti bližnjice \G, \V, \E. lp Oskar
+
+    \section{Ideje}
+
+    Najprej si bomo ogledali problem na poteh ($1 \times n $). Ugotovili smo, da se da ta problem rešiti 
+    na "brut force" način, torej brez uporabe dinamičnega programiranja.\\
+    Definerajmo $ G_{i,j} :=$ največji uteženi podgraf od $i$-tega do $j$-tega vozlšča,\\
+    $u_{i} :=$ utež vozlišča $v_i$; $\forall u_{i} \in \{-1, 1\} $
+    Psevdo koda:\\
+    for $i= 1,\dots,n$\\
+    for $j= i,\dots,n$\\
+    if $ \mathlarger{\sum_{k=i}^{j}u_{k} = 0} $\\
+    $ G_{i,j}  = \{v_i,\dots, v_j \}$ \\
+    else $ G_{i,j}  = \emptyset$
+    \\
+    \\
+    Rešitev : max($G_{i,j}$)
 
 
 
