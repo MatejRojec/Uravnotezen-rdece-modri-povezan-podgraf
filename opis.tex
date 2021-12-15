@@ -1,15 +1,30 @@
 \documentclass[a4paper, 11pt]{article}
 \usepackage[slovene]{babel}
 \usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsfonts,amsmath,amssymb}
 \usepackage{amsthm}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{relsize}
+\usepackage{algpseudocode}  % za psevdokodo
+\usepackage{algorithm}      % za
+\usepackage[all]{xy}
+
+\floatname{algorithm}{Algoritem}
+\renewcommand{\listalgorithmname}{Kazalo algoritmov}
+\algnewcommand\algorithmicto{\textbf{to}}
+\algnewcommand\algorithmicin{\textbf{in}}
+\algnewcommand\algorithmicforeach{\textbf{for each}}
+\algrenewtext{For}[3]{\algorithmicfor\ #1 $\gets$ #2\ \algorithmicto\ #3\ \algorithmicdo}
+\algdef{S}[FOR]{ForEach}[2]{\algorithmicforeach\ #1\ \algorithmicin\ #2\ \algorithmicdo}
 
 
 \theoremstyle{definition}
 \newtheorem{definicija}{Definicija}
+\theoremstyle{definition}
+\newtheorem{opomba}{Opomba}
 \newtheorem{izrek}{Izrek}
 \newtheorem{trditev}{Trditev}
 \newtheorem{lema}{Lema}
@@ -48,64 +63,101 @@
     %\tableofcontents
     %\listoftables
     \section{Predstavitev problema}
-
+        
     Naj bo $G = (V, E)$ graf. Vsako vozlišče $v \in V $ je obarvano rdeče ali modro. 
     Najti želimo največji povezani podgraf $G' = (V', E')$, ki ima enako število rdečih in modrih vozlišč.
     Velikost podgrafa je število njegovih vozlišč. Ta problem je v splošnem NP-težek, kar pomeni da ga ne moremo
-    rešiti v polinomskem času.\\
+    rešiti v polinomskem času.
     Osredotočili se bomo na optimalen algoritem za reševanje problema na mrežah oblike $1 \times n$ (pot), $2 \times n$, 
-    $3 \times n$ in $4 \times n$.\\
-    Naš algoritrm bomo testirali na grafih, kjer bomo vožlišča obarvali rdeče z verjetnostjo $p \in (0,1)$ 
+    $3 \times n$ in $4 \times n$.
+    Naš algoritem bomo testirali na grafih, kjer bomo vožlišča obarvali rdeče z verjetnostjo $p \in (0,1)$ 
     in modro z verjetnostjo $1 - p$. 
     
-    \subsection{Osnovni pojmi}
+
+    \section{Osnovni pojmi}
     
-    \begin{definicija}
-        Naj bo $G=(V,E)$ graf in naj bo $S \subseteq V$ podmnožica vozlišča grafa $G$. 
+    \begin{definicija} (Induciran podgraf)
+        Naj bo $G=(V,E)$ graf in naj bo $S \subseteq V$ podmnožica vozlišč grafa $G$. 
         Graf $G[S]$ je induciran podgraf grafa $G$, natanko takrat ko $\forall u, v \in S$ velja,
         da sta $u$ in $v$ sosednja v $G[S]$, natanko takrat ko sta sosednja v $G$.
     \end{definicija}
-
-    V našem primeru bomo iskali tak inducirani podgraf $G' = (V', E')$ grafa $G = (V, E)$, kjer lahko možico volzlišč
-    zapišemo kot 
+    
+    V našem primeru bomo iskali največji povezan inducirani podgraf \\ $G' = (V', E')$ grafa $G = (V, E)$, kjer lahko možico volzlišč
+    zapišemo kot: 
         $$ V' = V_{R} \cup V_{B},$$
-    za katero velja $ V_{R} \cap  V_{B} = \emptyset $ in $|V_{R}| = |V_{B}| = \frac{|V'|}{2}$. Tako bomo dobil
-    uravnotežen povezan graf z enako števlo rdečih in modrih vozlišč.
-    %V našem problemu 
-    %proučujemo graf $G=(V,E)$, ki ima vsako vozlišče obarvano bodisi rdeče bodisi modro. 
-    %(Opomba: barva dodelitev ne ustreza samo dvodelnim grafom. Torej dopustimo tudi, 
-    %da sta sosednji vozlišči iste barve.) Iščemo največjo podmnožico $V'\subseteq V$, ki je barvno uravnotežena 
-    %(ima $\frac{|V'|}{2}$ rdečih in $\frac{|V'|}{2}$ modrih oglišč) in taka, da je inducirani podgraf 
-    %$G[V'$s] povezan. To imenujemo problem največjega uravnoteženega povezanega podgrafa.
+    za katero velja $ V_{R} \cap  V_{B} = \emptyset $ in $|V_{R}| = |V_{B}| = \frac{|V'|}{2}$. Tako bomo dobili
+    največji uravnotežen povezan podgraf z enakim številom rdečih in modrih vozlišč.    
 
+    \begin{definicija} (Pot) Graf $P_n=(V,E)$ je pot, kjer je
+        $V=\{ v_1,...,v_n \}$, če je množica povezav enaka:
+        $E = \{ (v_1,v_2),(v_2,v_3),...,(v_{n-1},v_n) \}$.
+    \end{definicija}
 
-  %V našem problemu 
-    %proučujemo graf $G=(V,E)$, ki ima vsako vozlišče obarvano bodisi rdeče bodisi modro. 
-    %(Opomba: barva dodelitev ne ustreza samo dvodelnim grafom. Torej dopustimo tudi, 
-    %da sta sosednji vozlišči iste barve.) Iščemo največjo podmnožico $V'\subseteq V$, ki je barvno uravnotežena 
-    %(ima $\frac{|V'|}{2}$ rdečih in $\frac{|V'|}{2}$ modrih oglišč) in taka, da je inducirani podgraf 
-    %$G[V'$s] povezan. To imenujemo problem največjega uravnoteženega povezanega podgrafa.
-
-    % Vito, namesto navadni G, V, E uporabi raje tiste iz \mathcal. Definiral sem ti bližnjice \G, \V, \E. lp Oskar
+    \begin{definicija} 
+    (Mreža) Graf $M_{m,n}=(V,E)$ je mreža velikosti $m \times n$, 
+    kjer je $V=\{ v_{1,1},...,v_{1,n},v_{2,1},...,v_{2,n},...,v_{m,1},...,v_{m,n} \}$, če je množica povezav oblike:
+    \begin{align*}
+    E =\{ &(v_{1,1}, v_{1,2}),(v_{1,2},v_{1,3}),...,(v_{1,n-1},v_{1,n}),  \\
+        &(v_{2,1}, v_{2,2}),(v_{2,2},v_{2,3}),...,(v_{2,n-1},v_{2,n}),  \\
+        &(v_{m,1}, v_{m,2}),(v_{m,2},v_{m,3}),...,(v_{m,n-1},v_{1,n}), \\
+        &(v_{1,1}, v_{2,1}),(v_{2,1},v_{3,1}),...,(v_{m-1,1},v_{m,1}),  \\
+        &(v_{1,2}, v_{2,2}),(v_{2,2},v_{3,2}),...,(v_{m-1,2},v_{m,2}), \\
+        &(v_{1,n}, v_{2,n}),(v_{2,n},v_{3,n}),...,(v_{m-1,n},v_{m,n})  \}.  
+    \end{align*}
+    \end{definicija}
 
     \section{Ideje}
 
-    Najprej si bomo ogledali problem na poteh ($1 \times n $). Ugotovili smo, da se da ta problem rešiti 
-    na "brut force" način, torej brez uporabe dinamičnega programiranja.\\
-    Definerajmo $ G_{i,j} :=$ največji uteženi podgraf od $i$-tega do $j$-tega vozlšča,\\
-    $u_{i} :=$ utež vozlišča $v_i$; $\forall u_{i} \in \{-1, 1\} $
-    Psevdo koda:\\
-    for $i= 1,\dots,n$\\
-    for $j= i,\dots,n$\\
-    if $ \mathlarger{\sum_{k=i}^{j}u_{k} = 0} $\\
-    $ G_{i,j}  = \{v_i,\dots, v_j \}$ \\
-    else $ G_{i,j}  = \emptyset$
-    \\
-    \\
-    Rešitev : max($G_{i,j}$)
+    Najprej si bomo ogledali problem na poteh ($1 \times n $), pri čemer bomo uporabili
+    dinamično programiranje kot je razvidno iz algoritma \ref{alg:BCS1} .    
+    Algoritem sprejme kot vhod pot dolžine $n$, kjer je vsako vozlišče
+    obarvano bodisi modro (B) bodisi rdeče (R). Najprej barvam dodelimo uteži
+    $u_i$, modrim vozliščem dodelimo utež 1, rdečim pa utež -1. 
+    Potem na vsakem koraku izračunamo delno vsoto $s_i$, ki pove razliko med
+    številom modrih in rdečih vozlišč od prvega do $i-$ tega vozlišča.
+    Nato izračunamo še $t_{j,i}$, ki pove razliko med
+    številom modrih in rdečih vozlišč od $j-$tega do $i-$tega.  
+    Kandidati so tisti $t_{j,i}$ za katere je $t_{j,i}=0$.
+    Med temi vzamemo največje podpoti $P_{l,k}$, pri katerih je razlika
+    $l-k$ maksimalna. 
+\begin{algorithm}[ht]
+  \caption{BCS za poti .}
+  \label{alg:BCS1}
+  \textbf{Vhod:} Pot $P_n$,
+  , barve vozlišč (B/R).     \\ 
+  \textbf{Izhod:} Najdaljša utežena (povezana) podpot $P_{l,k}$.  
+  \begin{algorithmic}[1]
+    \Function{BSCP}{$P_n$}
+    \For{$i$}{$1$}{$n$}
+        \If{Barva($v_i$) = B}
+            \State    $u_i  \leftarrow 1$ 
+        \Else
+            \State $u_i \leftarrow -1$
+        \EndIf
+    \EndFor
+    \State $s_0 \leftarrow 0$
+    \For{$i$}{$1$}{$n$}
+          \State $s_i \leftarrow s_{i-1} + u_i$
+          \For{$j$}{$1$}{$i$}
+            \State $t_{j,i} = s_i - s_{j-1}$
+          \EndFor
+    \EndFor
+
+    \State $ len \leftarrow \max \{ i-j \mid t_{j,i}=0 \} $
+    \State $P_{l,k} \leftarrow \{ \{ v_l,...,v_k \} \mid (t_{l,k} \leftarrow 0)~ \textnormal{\textbf{and}}~ k-l = len $ \}
+
+    \State \Return $P_{l,k}$  \label{alg:pomembna vrstica}
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
 
 
-
+\textbf{Načrt za naprej:}  
+\begin{itemize}
+    \item Posplošitev algoritma na mreže
+    \item Implementacija algoritma
+    \item Eksprerimenti 
+\end{itemize} 
 
 
 
