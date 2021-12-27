@@ -43,6 +43,12 @@ def j_vzorca(mreza, vzorec, stolpec):
                     j = j+item[2]
     return j
 
+def ujemanje(v1, v2):
+    for el in v2:
+        if el in v1:
+            return True
+    return False
+    
 # GLAVNA FUNKCIJA
 
 def pji(mreza):        #nam da prazen seznam ki ga bomo polnili [[[[]*st_vzorcev]*j]*st_stolpcev]
