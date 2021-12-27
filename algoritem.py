@@ -30,6 +30,17 @@ def st_stolpcev(mreza):
     a = [item[0] for item in mreza]
     return len(set(a))
 
+def j_vzorca(mreza, vzorec, stolpec):
+    j = 0
+    for item in mreza:
+        if item[0] == stolpec:
+            for v in vzorec:
+                if item[1] == (v-1):
+                    j = j+item[2]
+    return j
+
+print(j_vzorca(m1, [1,2], 1))
+
 def pji(mreza):        #nam da prazen seznam ki ga bomo polnili [[[[]*st_vzorcev]*j]*st_stolpcev]
     p = []
     for i in range(st_stolpcev(mreza)):
@@ -40,8 +51,23 @@ def pji(mreza):        #nam da prazen seznam ki ga bomo polnili [[[[]*st_vzorcev
 
 print(pji(m1))
 
+print((m1[1])[0])
+
 def alg(mreza):
     p = pji(mreza)
-    
+    for i in range(st_stolpcev(mreza)):
+        meja_j = (i+1)*st_vrstic(mreza)
+        if i == 0:
+            for j in range(2*meja_j+1):
+                c = j-2
+                for v in range(len(vzorec(mreza))):
+                    vzr = (vzorec(mreza))[v]
+                    if j_vzorca(mreza, vzr, i) == c:
+                        p[i][j][v] = len(set(vzr))
+                    else:
+                        p[i][j][v] = float('-inf')
+    return (p)
 
+            
 print(alg(m1))
+
