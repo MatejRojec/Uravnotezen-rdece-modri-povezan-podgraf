@@ -2,6 +2,8 @@ import random
 import itertools
 from itertools import combinations
 
+# GENERIRANJE MREŽ
+
 mylist=[1,-1]
 
 def mreza(stol, vrst):
@@ -13,6 +15,8 @@ def mreza(stol, vrst):
 
 # print (mreza(2,3))     vrne [stolpec, element v stolpcu, barva R=1 M=-1]
 m1 =  [[0, 0, 1], [0, 1, 1], [1, 0, -1], [1, 1, 1], [2, 0, 1], [2, 1, -1]]
+
+# OSNOVNE FUNKCIJE
 
 def vzorec(mreza):
     a = [item[1] for item in mreza]
@@ -39,7 +43,7 @@ def j_vzorca(mreza, vzorec, stolpec):
                     j = j+item[2]
     return j
 
-print(j_vzorca(m1, [1,2], 1))
+# GLAVNA FUNKCIJA
 
 def pji(mreza):        #nam da prazen seznam ki ga bomo polnili [[[[]*st_vzorcev]*j]*st_stolpcev]
     p = []
@@ -48,10 +52,6 @@ def pji(mreza):        #nam da prazen seznam ki ga bomo polnili [[[[]*st_vzorcev
         for j in range((2*(i+1)*st_vrstic(mreza))+1):
             p[i].append([[] for _ in range(len(vzorec(mreza)))])
     return p
-
-print(pji(m1))
-
-print((m1[1])[0])
 
 def alg(mreza):
     p = pji(mreza)
