@@ -52,27 +52,13 @@ def ujemanje(v1, v2):
     
 # GLAVNA FUNKCIJA
 
-def pji(mreza):        #nam da prazen seznam ki ga bomo polnili [[[[]*st_vzorcev]*j]*st_stolpcev]
+def pji(mreza):        #nam da prazen seznam ki ga bomo polnili [[[[]*st_vzorcev]* največja meja j]*st_stolpcev]
     p = []
     for i in range(st_stolpcev(mreza)):
         p.append([])
         for j in range((2*st_stolpcev(mreza)*st_vrstic(mreza))+1):
             p[i].append([[] for _ in range(len(vzorec(mreza)))])
     return p
-
-
-def pijv(mreza, p, i, j, v):    #TO DELA OK/ JE DELALO :)
-    a = [0]
-    vsota_v = j_vzorca(mreza, v, i)
-    b = j-vsota_v
-    if b == 0:
-        a.append(len(set(v)))
-    for u in range(len(vzorec(mreza))):
-        vzr = (vzorec(mreza))[u]
-        if ujemanje(vzr, v):
-            a.append(len(set(v))+p[i-1][b+st_stolpcev(mreza)*st_vrstic(mreza)][u])
-    return max(a)    
-
 
 def alg(mreza):
 
@@ -93,24 +79,23 @@ def alg(mreza):
                 
                 elif j > (i+1)*vrst+vrst*stol or j < -(i+1)*vrst+vrst*stol: #postavimo vse p kjer |j| > i|G| na -inf
                     p[i][j][v] = float('-inf')
-                
+    
                 else:
-                    p[i][j][v] = pijv(mreza,p, i+1, 0, vzr)
- 
-                    
-                
-
-
-        # else:
-        #     # for j in range(2*meja_j+1):
-        #     #     c = j-i*st_vrstic(mreza)-1
-        #     #     for v in range(len(vzorec(mreza))):
-        #     #         vzr = (vzorec(mreza))[v]
-        #     #         p[i][j][v] = len(vzorec(mreza))
+                    a = [0]
+                    vsota_v = j_vzorca(mreza, vzr, i)
+                    b = j-stol*vrst-vsota_v
+                    if b == 0:
+                        a.append(len(set(vzr)))
+                    for u in range(len(vzorec(mreza))):
+                        vzr2 = (vzorec(mreza))[u]
+                        if ujemanje(vzr2, vzr):
+                            a.append(len(set(vzr))+p[i-1][b+stol*vrst][u])
+                    p[i][j][v] = max(a)
     return (p)
 
             
 print(alg(m1))
+
 
 
 # print(pijv(m1,alg(m1),1, -1, [1,2]))
