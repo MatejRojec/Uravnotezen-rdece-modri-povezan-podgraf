@@ -15,6 +15,7 @@ def mreza(stol, vrst):
 
 # print (mreza(2,3))     vrne [stolpec, element v stolpcu, barva R=1 M=-1]
 m1 =  [[0, 0, 1], [0, 1, 1], [1, 0, -1], [1, 1, 1], [2, 0, 1], [2, 1, -1]]
+m2 =  [[0, 0, 1], [0, 1, 1], [1, 0, -1], [1, 1, 1]]
 
 # OSNOVNE FUNKCIJE
 
@@ -55,25 +56,64 @@ def pji(mreza):        #nam da prazen seznam ki ga bomo polnili [[[[]*st_vzorcev
     p = []
     for i in range(st_stolpcev(mreza)):
         p.append([])
-        for j in range((2*(i+1)*st_vrstic(mreza))+1):
+        for j in range((2*st_stolpcev(mreza)*st_vrstic(mreza))+1):
             p[i].append([[] for _ in range(len(vzorec(mreza)))])
     return p
 
+
+def pijv(mreza, p, i, j, v):    #TO DELA OK/ JE DELALO :)
+    a = [0]
+    vsota_v = j_vzorca(mreza, v, i)
+    b = j-vsota_v
+    if b == 0:
+        a.append(len(set(v)))
+    for u in range(len(vzorec(mreza))):
+        vzr = (vzorec(mreza))[u]
+        if ujemanje(vzr, v):
+            a.append(len(set(v))+p[i-1][b+st_stolpcev(mreza)*st_vrstic(mreza)][u])
+    return max(a)    
+
+
 def alg(mreza):
+
     p = pji(mreza)
-    for i in range(st_stolpcev(mreza)):
-        meja_j = (i+1)*st_vrstic(mreza)
-        if i == 0:
-            for j in range(2*meja_j+1):
-                c = j-2
-                for v in range(len(vzorec(mreza))):
-                    vzr = (vzorec(mreza))[v]
-                    if j_vzorca(mreza, vzr, i) == c:
-                        p[i][j][v] = len(set(vzr))
+    stol = st_stolpcev(mreza)
+    vrst = st_vrstic(mreza)
+
+    for i in range(stol): 
+        for j in range((2*stol*vrst)+1): 
+            for v in range(len(vzorec(mreza))):
+                vzr = (vzorec(mreza))[v]
+
+                if i == 0:  #postavimo vse p za prvi stolpec
+                    if j_vzorca(mreza, vzr, i) == j - stol*vrst:
+                        p[i][j][v] = j_vzorca(mreza, vzr, i)
                     else:
                         p[i][j][v] = float('-inf')
+                
+                elif j > (i+1)*vrst+vrst*stol or j < -(i+1)*vrst+vrst*stol: #postavimo vse p kjer |j| > i|G| na -inf
+                    p[i][j][v] = float('-inf')
+                
+                else:
+                    p[i][j][v] = pijv(mreza,p, i+1, 0, vzr)
+ 
+                    
+                
+
+
+        # else:
+        #     # for j in range(2*meja_j+1):
+        #     #     c = j-i*st_vrstic(mreza)-1
+        #     #     for v in range(len(vzorec(mreza))):
+        #     #         vzr = (vzorec(mreza))[v]
+        #     #         p[i][j][v] = len(vzorec(mreza))
     return (p)
 
             
 print(alg(m1))
 
+
+# print(pijv(m1,alg(m1),1, -1, [1,2]))
+# print(pijv(m1,alg(m1),1, 0, [1,2]))
+# print(pijv(m1,alg(m1),1, 1, [1,2]))
+# print(pijv(m1,alg(m1),1, -1, [1]))
