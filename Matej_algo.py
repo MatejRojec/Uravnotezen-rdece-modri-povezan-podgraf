@@ -58,7 +58,7 @@ def pji(grid):        #nam da prazen seznam ki ga bomo polnili [[[[]*st_vzorcev]
     p = numpy.zeros( (col(grid)+1, 2* col(grid) * rows(grid) + 1 , len(set_partition(grid)) ) )
     return p
 
-m2 =  [[0, 0, 1], [0, 1, 1], [1, 0, -1], [1, 1, 1]]
+m1 =  [[0, 0, 1], [0, 1, 1], [1, 0, -1], [1, 1, 1], [2, 0, 1], [2, 1, -1]]
 print (pji(m2))
 
 
@@ -84,8 +84,10 @@ def coloring(grid):
                         for v in patterns:
                             if match(v, patterns[k]):
                                 array_of_matching_elements = numpy.append(array_of_matching_elements,[ p[i-1][j+sumasion][v] ])
-                        if array_of_matching_elements == numpy.empty(0):
+                        if array_of_matching_elements == numpy.empty(0) and j != sum_of_colors(grid, patterns[k] ,i):
                             p[i][j+cols * row][k] = 0
+                        elif array_of_matching_elements == numpy.empty(0) and j != sum_of_colors(grid, patterns[k] ,i):
+                            p[i][j+cols * row][k] = len(patterns[k])
                         else:
                             try:
                                 max_value = numpy.ndarray.max(array_of_matching_elements)
@@ -100,7 +102,6 @@ def coloring(grid):
                                 pass
     return p
 
-
-print(coloring(m2))
+print(coloring(m1))
 
 
