@@ -108,37 +108,34 @@ def alg(grid):
     row = rows(grid)
     patterns = set_partition(grid)
     for i in range(cols + 1):
-        for j in range(-cols * row, cols * row + 1):
+        for j in range(- 2* cols * row, 2 * cols * row + 1):
             for k in range(len(patterns)):
                 if i == 0:
                     if j == 0:
-                        p[i][j+cols * row][k] = 0
+                        p[i][j + 2* cols * row][k] = 0
                         print(1)
                     else:
-                        p[i][j+cols * row][k] = float("-Inf")
+                        p[i][j + 2* cols * row][k] = float("-Inf")
                         print(2)
                 else:
                     if abs(j) > i * row:
-                        p[i][j+cols * row][k] = float("-Inf") 
+                        p[i][j + 2 * cols * row][k] = float("-Inf") 
                         print(3)
                     else:
                         sumasion = j + sum_of_colors(grid, patterns[k] ,i) 
                         array_of_matching_elements = numpy.array([])
                         print(4)
                         print(sumasion)
-                        if sumasion > cols * row  or sumasion < cols * row:
-                            break
-                        else:
-                            for v in patterns:
-                                if match(v, patterns[k]):
-                                    array_of_matching_elements = numpy.append(array_of_matching_elements,[ p[i-1][j+sumasion][v] ])
-                                    print(5)
-                            if j == 0: 
-                                array_of_matching_elements = numpy.append(array_of_matching_elements,[ -len(patterns[k]) ])
-                                print(6)
-                            print(88)    
-                            max_value = numpy.ndarray.max(array_of_matching_elements)                            
-                            p[i][j+cols * row][k] = len(patterns[k]) + max_value
+                        for v in patterns:
+                            if match(v, patterns[k]):
+                                array_of_matching_elements = numpy.append(array_of_matching_elements,[ p[i-1][j+sumasion][v] ])
+                                print(5)
+                        if j == 0: 
+                            array_of_matching_elements = numpy.append(array_of_matching_elements,[ -len(patterns[k]) ])
+                            print(6)
+                        print(88)    
+                        max_value = numpy.ndarray.max(array_of_matching_elements)                            
+                        p[i][j+cols * row][k] = len(patterns[k]) + max_value
     return p
 
 print(alg(m1))
