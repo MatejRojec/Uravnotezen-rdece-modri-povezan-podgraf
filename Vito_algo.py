@@ -73,7 +73,7 @@ def P(G):
 
                 if i == 0:
                     if  vr_vz == fj:
-                        p[i][j][v] = vr_vz
+                        p[i][j][v] = len(vz)
                     else:
                         p[i][j][v] = float('-inf')
 
@@ -83,52 +83,57 @@ def P(G):
                 else:
                     kandidati = [float('-inf')]
                     for u in range(len(vzorec)):
-                        if abs(fj + vr_vz) > (i+1)*m: # nam zagotovi da ne pademo ven
-                            pass
+                        if abs(fj - vr_vz) >= (i+1)*m: # nam zagotovi da ne pademo ven
+                            continue
                         else:
                             if ujemanje(vzorec[u], vz):
-                                st_vozlisc = len(vz) + p[i-1][j + vr_vz][u]
+                                st_vozlisc = len(vz) + p[i-1][j - vr_vz][u]
                                 kandidati.append(st_vozlisc)
                     p[i][j][v] = max(kandidati)
     return(p)
 
 def najvecji_p(G):
     p = P(G)
-    r = len(p)
-    q = len(p[0])
-    s = len(p[0][0])
+    r = len(p) # stolpec
+    q = len(p[0]) # st. mej za razlike j
+    s = len(p[0][0]) # st. vzorcev
     st_vozlisc = []
+    j_0 = q//2 #potegnemo j=0
     for i in range(r):
-        for j in range(q):
-            for v in range(s):
-                p[i][j][v] += 1
-                if p[i][j][v] == float("-inf"):
-                    p[i][j][v] = 0
-                else:
-                    st_vozlisc.append(p[i][j][v])
-    max_st_vozlisc = max(st_vozlisc)
-    return(max_st_vozlisc)
+        for v in range(s):
+            if p[i][j_0][v] == float("-inf"):
+                p[i][j_0][v] = 0
+            else:
+                st_vozlisc.append(p[i][j_0][v])
+    try:
+        return(max(st_vozlisc))
+    except ValueError:
+        print("Graf G ne vsebuje nobenega uravnoteženega podgrafa")
 
 
 
 G1 = [[1, -1], [-1, 1], [1, -1]]
 print(najvecji_p(G1))
-# 6
+
 
 G2 = [[1, -1], [-1, 1], [1, -1], [1, -1]]
 print(najvecji_p(G2))
-# 8
+# 8 naklucje
 
-G3 = [[1, -1, 1], [-1, 1, 1], [1, -1, 1]]
+G3 = [[-1, 1, -1], [1, 1, 1], [-1, 1, -1]]
 print(najvecji_p(G3))
 # 
+G4 = [[-1, -1, -1], [1, 1, 1], [-1, -1, -1]]
+print(najvecji_p(G4))
 
-
-#print(P(G3))
-
-
+G5 = [[-1, -1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1]]
+print(najvecji_p(G5))
                             
+G6 = [[-1, -1, -1], [1, 1, 1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1]]
+print(najvecji_p(G6))
 
+G7 = [[1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1]]
+print(najvecji_p(G7))
 
 
                 
