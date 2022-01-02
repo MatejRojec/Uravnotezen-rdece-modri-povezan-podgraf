@@ -1,8 +1,8 @@
 import random
 from itertools import combinations
 
-
-def generiraj_G(n, m, p):
+#G je seznam stolpcev z utezmi (= [[stolpec 1 z z uezmi], [stolpec 2 z utezmi], ...])
+def generiraj_G(n, m, p): 
     # n...stevilo stolcev
     # m...stevilo vrstic
     # p...verjetnost redecega z vrednostjo 1
@@ -28,8 +28,8 @@ def generiraj_vzorec(G): # generera vse mozne vzorce glede na stevilo vrstic
 def vrednost_vzorca(G, vzorec, i): #vrednost vzorca v i-tem stolcu grafa G
     vsota = 0
     stolpec = G[i]
-    for v in vzorec:
-        vsota += stolpec[v-1]
+    for el in vzorec:
+        vsota += stolpec[el-1]
     return(vsota)
 
 def ujemanje(v1, v2): #ce se vzorec v1 ujema z vzorcem v2
@@ -118,7 +118,9 @@ def najvecji_p(G):
     try:
         return(max(st_vozlisc))
     except ValueError:
-        print("Graf G ne vsebuje nobenega uravnoteženega podgrafa")
+        niz = "Graf G ne vsebuje nobenega uravnoteženega podgrafa"
+        #print("Graf G ne vsebuje nobenega uravnoteženega podgrafa")
+        return(niz)
 
 #G1  = [[-1,-1,1],[-1,-1,-1,], [1,-1,-1]]
 #print(najvecji_p(G1))
