@@ -14,7 +14,7 @@ def main_route():
             main_interface_G()
             break
         elif action == "e":
-            print("\nGoodbay!\n")
+            print("\nGoodbye!\n")
             break
         else:
             print("Wrong input!")
@@ -47,7 +47,7 @@ def main_interface_G():
                 print("Wrong input!")
                 input('[enter]')
         elif action == "e":
-            print("\nGoodbay!\n")
+            print("\nGoodbye!\n")
             break
         else:
             print("Wrong input!")
