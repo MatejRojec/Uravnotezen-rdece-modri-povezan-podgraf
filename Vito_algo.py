@@ -63,7 +63,7 @@ def povezan(vzorec): # vrne ali je vzorec vzorec povezan
             i += 1
         return True
 
-
+# poračuna vse mozne p_ijv 
 def P(G):
     n = len(G) # st stolpcev
     m = len(G[0]) # st vrsic 
@@ -99,7 +99,8 @@ def P(G):
                     p[i][j][v] = max(kandidati)
     return(p)
 
-def najvecji_p(G):
+# izberemo najvecji p_i0v; kjer je v povezan 
+def max_BCS(G):
     p = P(G)
     r = len(p) # stolpec
     q = len(p[0]) # st. mej za razlike j
@@ -113,7 +114,7 @@ def najvecji_p(G):
                 if p[i][j_0][v] == float("-inf"):
                     p[i][j_0][v] = 0
                 else:
-                    print(vzorci[v], p[i][j_0][v])
+                    #print(vzorci[v], p[i][j_0][v])
                     st_vozlisc.append(p[i][j_0][v])
     try:
         return(max(st_vozlisc))
@@ -122,31 +123,22 @@ def najvecji_p(G):
         #print("Graf G ne vsebuje nobenega uravnoteženega podgrafa")
         return(niz)
 
-#G1  = [[-1,-1,1],[-1,-1,-1,], [1,-1,-1]]
-#print(najvecji_p(G1))
+def prikaz(n, m, p):
+    G = generiraj_G(n, m, p)
+    p = max_BCS(G)
+    print("G: ")
+    print()
+    # izpis grafa
+    i = 0
+    for j in range(len(G[0])):
+        vrstica = [el[j] for el in G]
+        print(" -- ".join([str(el) for el in vrstica]).replace("-1", "(-)").replace("1", "(+)"))
+        if j != len(G[0])-1:
+            vmesna_vrstica = [" | " for _ in G]
+            print("    ".join(vmesna_vrstica))
+    print()
+    print("Stevilo vozlisc največjega BCS: ", p)
 
-#G1 = [[1, -1], [-1, 1], [1, -1]]
-#print(najvecji_p(G1))
-#
-#
-#G2 = [[1, -1], [-1, 1], [1, -1], [1, -1]]
-#print(najvecji_p(G2))
-## 8 naklucje
-#
-#G3 = [[-1, 1, -1], [1, 1, 1], [-1, 1, -1]]
-#print(najvecji_p(G3))
-## 
-#G4 = [[-1, -1, -1], [1, 1, 1], [-1, -1, -1]]
-#print(najvecji_p(G4))
-#
-#G5 = [[-1, -1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1]]
-#print(najvecji_p(G5))
-#                            
-#G6 = [[-1, -1, -1], [1, 1, 1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1]]
-#print(najvecji_p(G6))
-#
-#G7 = [[1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1]]
-#print(najvecji_p(G7))
 
 
 
