@@ -198,6 +198,7 @@ sympy-plots-for-*.tex/
 *.pytxcode
 pythontex-files-*/
 *__pycashe__
+*.pyc
 
 # tcolorbox
 *.listing
