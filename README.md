@@ -13,13 +13,13 @@
 ## Zaženi program
 <ol>
     <li>Kolnirajte repozitorij</li>
-    <li>Poženite vmesnik.py z ukazom v terminalu (pot kjer se nahaja repozitorij/ <b>$ 'python vmesnik.py' </b>)</li>
+    <li>Poženite vmesnik.py z ukazom v terminalu (pot kjer se nahaja repozitorij/ <b>$ `python vmesnik.py` </b>)</li>
 </ol>
 
 ### Opombe
 
 
-* pomebna koda ter funkcije se nahajajo v 'model.py'
+* pomebna koda ter funkcije se nahajajo v `model.py`
 * uporabili smo pakete:
     * random
     * itertools
