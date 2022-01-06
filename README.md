@@ -13,7 +13,7 @@
 ## Zaženi program
 <ol>
     <li>Kolnirajte repozitorij</li>
-    <li>Poženite vmesnik.py z ukazom v terminalu (pot kjer se nahaja repozitorij/ <b>$ `python vmesnik.py` </b>)</li>
+    <li>Poženite vmesnik.py z ukazom v terminalu (pot kjer se nahaja repozitorij/ $ `python vmesnik.py` )</li>
 </ol>
 
 ### Opombe
