@@ -1,5 +1,5 @@
 import random
-from itertools import combinations
+from itertools import combinations, permutations
 
 #G je seznam stolpcev z utezmi (= [[stolpec 1 z z uezmi], [stolpec 2 z utezmi], ...])
 def generiraj_G(n, m, p): 
@@ -50,6 +50,19 @@ def generiraj_p_ijv(G):
             p[i].append([[] for _ in range(len_v)])
     return(p)
 
+# generira enak objekt kot p_ijv samo da bomo v njega shranjevali katera vozlisca izberemo
+def generiraj_V(G): 
+    V = []
+    n = len(G) # st stolpcev
+    m = len(G[0]) # st vrsic 
+    len_v = len(generiraj_vzorec(G))
+    for i in range(n):
+        V.append([])
+        for j in range((2*n*m)+1): #
+            V[i].append([[] for _ in range(len_v)])
+    return(V)
+
+
 def povezan(vzorec): # vrne ali je vzorec vzorec povezan
     if len(vzorec) == 1:
         return True
@@ -99,6 +112,52 @@ def P(G):
                     p[i][j][v] = max(kandidati)
     return(p)
 
+def P_V(G):
+    n = len(G) # st stolpcev
+    m = len(G[0]) # st vrsic 
+    vzorec = generiraj_vzorec(G)
+    p = generiraj_p_ijv(G)
+    V = generiraj_V(G)
+    for i in range(n): # za vsak stolpec
+        for j in range((2*n*m) + 1):
+            for v in range(len(vzorec)):
+                vz = vzorec[v] #potegnemo vzorec
+                fj = j - n*m # pretvorimo
+                vr_vz = vrednost_vzorca(G, vz, i)
+
+                if i == 0:
+                    if  vr_vz == fj:
+                        p[i][j][v] = len(vz)
+                        V[i][j][v] = vz
+                    else:
+                        p[i][j][v] = float('-inf')
+                        V[i][j][v] = None
+
+                elif abs(fj) > (i + 1)*m:
+                    p[i][j][v] = float('-inf')
+                    V[i][j][v] = None
+
+                else:
+                    kandidati = [float('-inf')]
+                    kandidati_vozlisc = [None]
+                    for u in range(len(vzorec)):
+                        if abs(fj - vr_vz) >= (i+1)*m: # nam zagotovi da ne pademo ven
+                            continue
+                        else:
+                            if ujemanje(vzorec[u], vz):
+                                if povezan(vzorec[u]): # vzamemo povezanega da ne prde do tezav pri max(pijv)
+                                    st_vozlisc = len(vz) + p[i-1][j - vr_vz][u]
+                                    kandidati.append(st_vozlisc)
+                                    kandidati_vozlisc.append([V[i-1][j - vr_vz][u], vz])
+                    max_kandidat = max(kandidati)
+                    indeks = kandidati.index(max_kandidat)
+                    #print(indeks)
+                    #print(kandidati)
+                    #print(kandidati_vozlisc)
+                    p[i][j][v] = max_kandidat
+                    V[i][j][v] = kandidati_vozlisc[indeks]
+    return(p, V)
+
 # izberemo najvecji p_i0v; kjer je v povezan 
 def max_BCS(G):
     p = P(G)
@@ -123,6 +182,34 @@ def max_BCS(G):
         #print("Graf G ne vsebuje nobenega uravnoteženega podgrafa")
         return(niz)
 
+def max_BCS_V(G):
+    p, V = P_V(G)
+    r = len(p) # stolpec
+    q = len(p[0]) # st. mej za razlike j
+    s = len(p[0][0]) # st. vzorcev
+    vzorci = generiraj_vzorec(G)
+    st_vozlisc = []
+    sez_vozlisc = []
+    j_0 = q//2 #potegnemo j=0
+    for i in range(r):
+        for v in range(s):
+            if povezan(vzorci[v]):
+                if p[i][j_0][v] == float("-inf"):
+                    p[i][j_0][v] = 0
+
+                else:
+                    #print(vzorci[v], p[i][j_0][v])
+                    st_vozlisc.append(p[i][j_0][v])
+                    sez_vozlisc.append(V[i][j_0][v])
+    try:
+        maxi = max(st_vozlisc)
+        indeks = st_vozlisc.index(maxi)
+        return(maxi, sez_vozlisc[indeks])
+    except ValueError:
+        niz = "Graf G ne vsebuje nobenega uravnoteženega podgrafa"
+        #print("Graf G ne vsebuje nobenega uravnoteženega podgrafa")
+        return(niz, "!")
+
 def prikaz(n, m, p):
     G = generiraj_G(n, m, p)
     p = max_BCS(G)
@@ -141,11 +228,20 @@ def prikaz(n, m, p):
 
 
 
+G1 = [[1, 1], [1, 1], [1, -1], [1, 1], [1, 1], [1, 1]]
+#print(P_V(G1))
+print(max_BCS(G1))
 
-                
+G2 = [[1, 1, 1], [1, 1, 1], [1, 1, 1], [-1, 1, 1], [1, 1,1]]
+print(max_BCS(G2))
+## 8 naklucje
+#
+G3 = [[-1, 1, -1], [1, 1, 1], [-1, 1, -1]]
+print(max_BCS_V(G3))
 
-            
-
-    
-
-
+#                            
+#G6 = [[-1, -1, -1], [1, 1, 1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [1, -1, -1]]
+#print(max_BCS_V(G6))
+#
+#G7 = [[1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1]]
+#print(najvecji_p(G7))
