@@ -64,6 +64,6 @@ def povezan(vzorec):
 
 
 #  Poskus:
-g = generiraj_G([4, 3], 0.5)
-B = BCS(g)
-print(B.n)
+#g = generiraj_G([4, 3], 0.5)
+#B = BCS(g)
+#print(B.n)
