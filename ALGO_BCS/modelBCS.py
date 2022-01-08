@@ -6,8 +6,8 @@ class BCS:
 
     def __init__(self, G):
         self.G = G
-        self.n = len(G) # st stolcev
-        self.m = len(G[0]) # st vrstic
+        self.n = G[0] # st stolcev
+        self.m = G[1] # st vrstic
         a = [i for i in range(1, self.m)]
         sez = [i+1 for i in range(self.m)]
         self.V =  sum([list(map(list, combinations(sez, i))) for i in range(len(sez) + 1)], [])[1:]
@@ -64,6 +64,6 @@ def povezan(vzorec):
 
 
 #  Poskus:
-#g = generiraj_G(4, 3, 0.5)
-#B = BCS(g)
-#print(B.n)
+g = generiraj_G([4, 3], 0.5)
+B = BCS(g)
+print(B.n)

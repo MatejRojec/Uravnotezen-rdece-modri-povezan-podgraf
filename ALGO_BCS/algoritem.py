@@ -32,15 +32,15 @@ def P(G):
                     if fj != 0:
                         kandidati = [float('-inf')]
                     else:
-                        kandidati = [-len(v)]    
+                        kandidati = [-len(vz)]    
                     for u in range(len(vzorec)):
                         if abs(fj - vr_vz) >= (i + 1)*m: # nam zagotovi da ne pademo ven
                             continue
                         else:
                             if ujemanje(vzorec[u], vz):
-                                if povezan(vzorec[u]): # vzamemo povezanega da ne prde do tezav pri max(pijv)
-                                    st_vozlisc = len(vz) + p[i - 1][j - vr_vz][u]
-                                    kandidati.append(st_vozlisc)
+                                # if povezan(vzorec[u]): # vzamemo povezanega da ne prde do tezav pri max(pijv)
+                                st_vozlisc = len(vz) + p[i - 1][j - vr_vz][u]
+                                kandidati.append(st_vozlisc)
                     p[i][j][v] = max(kandidati)
     return(p)
 
@@ -57,11 +57,7 @@ def max_BCS(G):
     for i in range(r):
         for v in range(s):
             if povezan(vzorci[v]):
-                if p[i][j_0][v] == float("-inf"):
-                    p[i][j_0][v] = 0
-                else:
-                    #print(vzorci[v], p[i][j_0][v])
-                    st_vozlisc.append(p[i][j_0][v])
+                st_vozlisc.append(p[i][j_0][v])
     try:
         return(max(st_vozlisc))
     except ValueError:
@@ -70,6 +66,8 @@ def max_BCS(G):
 
 G1 = [[1, 1], [1, 1], [1, -1], [1, 1], [1, 1], [1, 1]] 
 G3 = [[-1, 1, -1], [1, 1, 1], [-1, 1, -1]]
+G4 = [[-1,1,1,1,1,-1],[1,1,1,1,1,1],[-1,1,1,1,1,-1],[1,1,1,1,1,1],[-1,1,-1,1,1,-1]]
 
 print(max_BCS(G3))
+
 
