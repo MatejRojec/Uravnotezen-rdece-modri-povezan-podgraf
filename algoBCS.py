@@ -157,7 +157,7 @@ def max_BCS_V(G):
 
 def prikaz(n, m, p):
     G = generiraj_G(n, m, p)
-    p = max_BCS(G)
+    p, V = max_BCS_V(G)
     print("G: ")
     print()
     # izpis grafa
