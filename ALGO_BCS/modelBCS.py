@@ -8,7 +8,9 @@ class BCS:
         self.m = len(G[0]) # st vrstic
         a = [i for i in range(1, self.m)]
         sez = [i+1 for i in range(self.m)]
-        self.V =  sum([list(map(list, combinations(sez, i))) for i in range(len(sez) + 1)], [])[1:]
+        # VZ = vsi mozni vzorci
+        self.VZ =  sum([list(map(list, combinations(sez, i))) for i in range(len(sez) + 1)], [])[1:]
+    
     def vrednost_vzorca(self, vzorec, i): #vrednost vzorca v i-tem stolcu grafa G
         vsota = 0
         stolpec = self.G[i]
@@ -17,12 +19,22 @@ class BCS:
         return(vsota)
     def generiraj_p_ijv(self): 
         self.p = []
-        len_v = len(self.V)
+        len_v = len(self.VZ)
         for i in range(self.n):
             self.p.append([])
             for j in range((2*self.n*self.m)+1): #
                 self.p[i].append([[] for _ in range(len_v)])
         return(self.p)
+    
+    def generiraj_V(self): 
+        self.V = []
+        len_v = len(self.VZ)
+        for i in range(self.n):
+            self.V.append([])
+            for j in range((2*self.n*self.m)+1): #
+                self.V[i].append([[] for _ in range(len_v)])
+        return(self.V)
+
 # ustvari graf G
 def generiraj_G(n, m, p): 
     # n...stevilo stolcev
