@@ -17,15 +17,18 @@ def P(G):
                 vr_vz, dolzina_v = B.vrednost_vzorca(vz, i)
 
                 if i == 0:
-                    if  vr_vz == fj:
-                        p[i][j][v] = dolzina_v
-                        V[i][j][v] = vz
-                    elif fj == 0:
-                        p[i][j][v] = 0
-                        V[i][j][v] = None
-                    else:
+                    if any(len(d) > 1 for d in vzorec[v]):
                         p[i][j][v] = float('-inf')
-                        V[i][j][v] = None
+                    else:
+                        if  vr_vz == fj:
+                            p[i][j][v] = dolzina_v
+                            V[i][j][v] = vz
+                        elif fj == 0:
+                            p[i][j][v] = 0
+                            V[i][j][v] = None
+                        else:
+                            p[i][j][v] = float('-inf')
+                            V[i][j][v] = None
 
                 elif abs(fj) > (i + 1) * m:
                     p[i][j][v] = float('-inf')
@@ -36,7 +39,7 @@ def P(G):
                     if fj != 0:
                         kandidati = [float('-inf')]
                     else:
-                        kandidati = [-dolzina_v]    
+                        kandidati = [0]    
                     for u in range(len(vzorec)):
                         if abs(fj - vr_vz) >= (i + 1)*m: # nam zagotovi da ne pademo ven
                             continue
@@ -47,7 +50,8 @@ def P(G):
                             pogoj1 = all(any(x in vv for x in d) for d in du)
                             pogoj2 = all(any(all(any(x in c for x in e) for c in d) for e in du) for d in vzorec[v] if len(d) > 1)
                             if pogoj1 and pogoj2:
-                                if vzorec[v] in [ [[[1], [3]]], [[[1], [4]]], [[[2], [4]]], [[[1, 2], [4]]], [[[1], [3, 4]]]] and fj == 0:
+                                if any(len(d) > 1 for d in vzorec[v]) and p[i - 1][j - vr_vz][u] == 0:
+                                #if vzorec[v] in [ [[[1], [3]]], [[[1], [4]]], [[[2], [4]]], [[[1, 2], [4]]], [[[1], [3, 4]]]] and fj == 0:
                                     continue
                                 else:
                                     st_vozlisc = dolzina_v + p[i - 1][j - vr_vz][u]
@@ -95,6 +99,6 @@ G5 = generiraj_G(10, 2, 0.5)
 
 G6 = [[1], [1], [1], [1], [1], [-1], [-1], [1], [1], [-1], [1], [1]] 
 #print(P(G1))
-
+G7 = generiraj_G(20, 1, 0.5)
 #print(P(G1))
-print(max_BCS(G4))
+#print(max_BCS(G7))
