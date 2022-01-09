@@ -1,5 +1,47 @@
 import random
 from itertools import combinations
+
+VZORCI = {
+    1 :  [ [[1]] ],
+    2 :  [ 
+        [[[1]]], 
+        [[[2]]], 
+        [[[1, 2]]]],
+    3 : [
+        [[[1]]], 
+        [[[2]]], 
+        [[[3]]], 
+        [[[1, 2]]], 
+        [[[1], [3]]], 
+        [[[1]], [[3]]], 
+        [[[2, 3]]],
+        [[[1, 2, 3]]]
+    ],
+    4 : [
+        [[[1]]] ,
+        [[[2]]] ,
+        [[[3]]] ,
+        [[[4]]] ,
+        [[[1, 2]]],
+        [[[1], [3]]],
+        [[[1]], [[3]]],
+        [[[1], [4]]],
+        [[[1]], [[4]]],
+        [[[2, 3]]],
+        [[[2], [4]]],
+        [[[2]], [[4]]],
+        [[[3, 4]]],
+        [[[1, 2, 3]]],
+        [[[1, 2], [4]]],
+        [[[1, 2]], [[4]]],
+        [[[1], [3, 4]]],
+        [[[1]], [[3, 4]]],
+        [[[2, 3, 4]]],
+        [[[1, 2, 3, 4]]]
+    ]
+}
+
+
 class BCS:
 
     def __init__(self, G):
@@ -9,14 +51,26 @@ class BCS:
         a = [i for i in range(1, self.m)]
         sez = [i+1 for i in range(self.m)]
         # VZ = vsi mozni vzorci
-        self.VZ =  sum([list(map(list, combinations(sez, i))) for i in range(len(sez) + 1)], [])[1:]
+        self.VZ = VZORCI[self.m]
+        #self.VZ =  sum([list(map(list, combinations(sez, i))) for i in range(len(sez) + 1)], [])[1:]
     
     def vrednost_vzorca(self, vzorec, i): #vrednost vzorca v i-tem stolcu grafa G
         vsota = 0
         stolpec = self.G[i]
-        for el in vzorec:
-            vsota += stolpec[el-1]
+        if len(vzorec) == 1:
+            vzorec = vzorec[0]
+            vz  = list(set(sum(vzorec)))
+            for el in vz:
+                vsota += stolpec[el-1]
+        else:   
+            vz = []
+            for el in vzorec:
+                vz += el
+            vz  = list(set(sum(vzorec)))
+            for el in vz:
+                vsota += stolpec[el-1]
         return(vsota)
+    
     def generiraj_p_ijv(self): 
         self.p = []
         len_v = len(self.VZ)
@@ -69,4 +123,4 @@ def povezan(vzorec):
 #  Poskus:
 #g = generiraj_G(4, 3, 0.5)
 #B = BCS(g)
-#print(B.n)
+#print(B.VZ)
