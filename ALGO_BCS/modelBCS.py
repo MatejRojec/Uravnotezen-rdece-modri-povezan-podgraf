@@ -55,21 +55,17 @@ class BCS:
         #self.VZ =  sum([list(map(list, combinations(sez, i))) for i in range(len(sez) + 1)], [])[1:]
     
     def vrednost_vzorca(self, vzorec, i): #vrednost vzorca v i-tem stolcu grafa G
-        vsota = 0
+        # to vrne stali vzorec
+        result = []
+        for list1 in vzorec:
+            for j in list1:
+                 for l in j:
+                    result.append(l)
+        vsota = 0        
         stolpec = self.G[i]
-        if len(vzorec) == 1:
-            vzorec = vzorec[0]
-            vz  = list(set(sum(vzorec)))
-            for el in vz:
-                vsota += stolpec[el-1]
-        else:   
-            vz = []
-            for el in vzorec:
-                vz += el
-            vz  = list(set(sum(vzorec)))
-            for el in vz:
-                vsota += stolpec[el-1]
-        return(vsota)
+        for el in result:
+            vsota += stolpec[el-1]
+        return(vsota, len(result))
     
     def generiraj_p_ijv(self): 
         self.p = []
@@ -121,6 +117,9 @@ def povezan(vzorec):
 
 
 #  Poskus:
+#G3 = [[-1, 1, -1], [-1, -1, 1], [-1, 1, -1]]
 #g = generiraj_G(4, 3, 0.5)
-#B = BCS(g)
-#print(B.VZ)
+#B = BCS(G3)
+
+
+#print(B.vrednost_vzorca(el, 1))

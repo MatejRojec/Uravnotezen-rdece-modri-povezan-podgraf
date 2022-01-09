@@ -14,11 +14,11 @@ def P(G):
             for v in range(len(vzorec)):
                 vz = vzorec[v] #potegnemo vzorec
                 fj = j - n * m # pretvorimo
-                vr_vz = B.vrednost_vzorca(vz, i)
+                vr_vz, dolzina_v = B.vrednost_vzorca(vz, i)
 
                 if i == 0:
                     if  vr_vz == fj:
-                        p[i][j][v] = len(vz)
+                        p[i][j][v] = dolzina_v
                         #V[i][j][v] = vz
                     elif fj == 0:
                         p[i][j][v] = 0
@@ -36,7 +36,7 @@ def P(G):
                     if fj != 0:
                         kandidati = [float('-inf')]
                     else:
-                        kandidati = [-len(vz)]    
+                        kandidati = [-dolzina_v]    
                     for u in range(len(vzorec)):
                         if abs(fj - vr_vz) >= (i + 1)*m: # nam zagotovi da ne pademo ven
                             continue
@@ -50,7 +50,7 @@ def P(G):
                                 if vzorec[v] in [ [[[1], [3]]], [[[1], [4]]], [[[2], [4]]], [[[1, 2], [4]]], [[[1], [3, 4]]]] and fj == 0:
                                     continue
                                 else:
-                                    st_vozlisc = len(vz) + p[i - 1][j - vr_vz][u]
+                                    st_vozlisc = dolzina_v + p[i - 1][j - vr_vz][u]
                                     kandidati.append(st_vozlisc)
                             #if ujemanje(vzorec[u], vz):
                                 # if povezan(vzorec[u]): # vzamemo povezanega da ne prde do tezav pri max(pijv)
@@ -64,18 +64,17 @@ def P(G):
 # poisce najvecji p_i0v
 def max_BCS(G):
     B = BCS(G)
-    p, V = P(G)
+    p = P(G)
     r = len(p) # stolpec
     q = len(p[0]) # st. mej za razlike j
     s = len(p[0][0]) # st. vzorcev
     vzorci = B.VZ
-    print(vzorci)
     st_vozlisc = []
     #sez_vozlisc = []
     j_0 = q//2 #potegnemo j=0
     for i in range(r):
         for v in range(s):
-            if len(vzorci[v]):
+            if len(vzorci[v]) == 1:
             #if povezan(vzorci[v]):
                 st_vozlisc.append(p[i][j_0][v])
                 #sez_vozlisc.append(V[i][j_0][v])
@@ -87,10 +86,11 @@ def max_BCS(G):
         niz = "Graf G ne vsebuje nobenega uravnoteženega podgrafa"
         return(niz)
 
-G1 = [[1, 1], [1, 1], [1, -1], [1, 1], [1, 1], [1, 1]] 
-G3 = [[-1, 1, -1], [1, 1, 1], [-1, 1, -1]]
-G4 = [[-1,1,1,1,1,-1],[1,1,1,1,1,1],[-1,1,1,1,1,-1],[1,1,1,1,1,1],[-1,1,-1,1,1,-1]]
+G1 = [[-1, 1], [1, 1], [1, -1], [1, 1], [1, -1], [1, 1]] 
+G3 = [[-1, -1, -1], [-1, -1, -1], [-1, -1, -1]]
+
+G4 = [[-1,1,1,1],[1,1,1,1],[-1,1,1,1],[1,1,1,1],[-1,1,-1,1]]
 
 #print(P(G1))
 
-print(max_BCS(G1))
+print(max_BCS(G4))
