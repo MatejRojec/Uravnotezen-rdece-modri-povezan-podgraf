@@ -1,4 +1,4 @@
-from program.model import *
+from model import *
 
 
 def main_route():

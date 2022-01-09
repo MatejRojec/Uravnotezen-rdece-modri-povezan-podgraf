@@ -2,7 +2,7 @@ import random
 from itertools import combinations
 
 VZORCI = {
-    1 :  [ [[1]] ],
+    1 :  [[[1]]],
     2 :  [ 
         [[[1]]], 
         [[[2]]], 
@@ -57,10 +57,13 @@ class BCS:
     def vrednost_vzorca(self, vzorec, i): #vrednost vzorca v i-tem stolcu grafa G
         # to vrne stali vzorec
         result = []
-        for list1 in vzorec:
-            for j in list1:
-                 for l in j:
-                    result.append(l)
+        if self.m == 1:
+            result = [1]
+        else:
+            for list1 in vzorec:
+                for j in list1:
+                    for l in j:
+                        result.append(l)
         vsota = 0        
         stolpec = self.G[i]
         for el in result:
