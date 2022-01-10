@@ -1,4 +1,4 @@
-# Uravnotezen-rdece-modri-povezan-podgraf
+# Uravnotežen rdeče modri povezan podgraf
 
 ## Opis problema
 >    Naj bo G = (V, E) graf. Vsako vozlišče v ∈ V je obarvano rdeče ali modro. Najti želimo največji povezani podgraf G' = (V', E'), ki ima enako število rdečih in modrih         vozlišč.
