@@ -131,9 +131,8 @@ Ljubljana, 2022}
 
 \section{Algoritem}
     Ogledali si bomo problem na mrežah ($ m \times n$), pri čemer bomo uporabili
-    dinamično programiranje kot je razvidno iz algoritma \ref{alg:BCS1} .    
-    Algoritem sprejme kot vhod mrežo $m \times n$, kjer je vsako vozlišče
-    obarvano bodisi modro (B) bodisi rdeče (R). 
+    dinamično programiranje. Algoritem sprejme kot vhod mrežo $m \times n$, 
+    kjer je vsako vozlišče obarvano bodisi modro bodisi rdeče. 
 
     \vline
 
@@ -142,14 +141,17 @@ Ljubljana, 2022}
         \item 
         $x_{ik} = 1$, če je $k$-to vozlišče v $i$-tem stolpcu rdeče, in $-1$, če je modro
         \item 
-        $p_{ijv}$ je največji podgraf do $i$-tega stolpca z razliko $j$, kjer je v zadnjem stolpcu uporabljeni vzorec $v$   
+        $p_{ijv}$ je velikost največji podgraf do $i$-tega stolpca z razliko $j$, kjer je v zadnjem stolpcu uporabljeni vzorec $v$   
+        \item 
+        $\mathcal{V}_{ijv}$  so vozlišča največjega podgrafa do $i-$tega stolpca z razliko $j$, kjer
+        je v zadnjem stolpcu uporabljen vzorec $v$
     \end{itemize}
 
     Začetni pogoji so:
     \begin{itemize}
         \item 
         $p_{10v} = 0$
-        \item 
+        \item
         $ p_{1jv} =
             \begin{cases}
             |v|, & \text{če}\ j = \sum_{k \in v}x_{1k} \\
@@ -162,13 +164,19 @@ Ljubljana, 2022}
 
     Rekurzivne enačbe:
     $$
-    p_{ijv} = |v| + \max\left(\{p_{i-1, j - \sum_{k \in v} x_{ik}, u} \mid u \sim v\} \cup \{-|v| \mid j = 0\}\right) ,\ (-i|G| \le j \le i|G|)
+    p_{ijv} = |v| ~+~ \max\left(\{p_{i-1, j - \sum_{k \in v} x_{ik}, u} \mid u \sim v\} \cup \{-|v| \mid j = 0\}\right) ,\ (-i|G| \le j \le i|G|) 
     $$
-
+    
     Optimalna rešitev:
-
     $$p^* = \max\{p_{i0v} \mid i \le 1 \le n, v \text{ povezan}\}$$
 
+
+
+Na vsakem koraku algoritma izračunamo $p_{ijv}= |v| + \eta$ ter najdemo pripadajočo množico $\mathcal{V}_{ijv}$.
+Množico $\mathcal{V}_{ijv}$, če ta ni prazna, dobimo tako, da ji dodamo vozlišča vzorca $v$ in množico
+vozlišč, kjer je dosežena $\eta$.
+
+    
 Za programerski del naloge smo uporabljali Python. V nadaljevanju so predstavljenje glavne funkcije, 
 ki smo jih za ta del definirali.
 
@@ -182,7 +190,6 @@ Pomožna datoteka \verb+modelBCS.py+ vsebuje razred
 \newpage
 
 \section{Eksperimenti}
-
 
 V tem delu seminarske naloge smo se ukvarjali s tremi ključnimi vprašanji:
     
@@ -270,7 +277,23 @@ Podatki prikazujejo povprečen čas izvajanja algoritma v sekundah.
 \end{table}
 
 Iz grafa \ref{fig:cas} je razvidno, da je algoritem bistveno počasnejši za 
-velike $n$ .
+velike $n$.
+
+\section{Zaključek}
+
+Iz analize rezultatov lahko zaključimo, da imajo mreže največji 
+uravnotežen rdeče modri povezan podgraf pri $p=0.5$, kar smo tudi
+pričakovali. Zanimivo nam je bilo, kako se delež vozlišč v BCS 
+grafu pri $m=1$ v odvisnosti od $p$ razlikuje od ostalih $m$-jev.
+Za $p$ blizu $0.5$ je delež pri večjih $m-$jih večji, medtem ko je za 
+$p \in \{ 0,1 \}$ ta delež večji pri $m=1$.
+Vredno je omeniti, da mreže ne vsebujejo enako vozlišč in 
+zato je morda rezultat (delež vzorcev) bolj natančen za večji $m$.
+Iz naslednje analize lahko opazimo, da $m=1$ izstopa, saj 
+ima nekoliko manjši delež vozlišč v primerjavi z drugimi.
+Iz zadnje anlize pa vidimo, da za večje $m$ algoritem porabi bistveno
+več časa kot za manjše, kar je posledica velikega števila vzorcev,
+ki jih mora pregledati ter ostalih računskih operacij.  
 
 
 \end{document}  
