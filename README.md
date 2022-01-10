@@ -1,27 +1,25 @@
 # Uravnotezen-rdece-modri-povezan-podgraf
 
 ## Opis problema
->    Naj bo $G = (V, E)$ graf. Vsako vozlišče $v \in V $ je obarvano rdeče ali modro. Najti želimo največji povezani podgraf $G' = (V', E')$, ki ima enako število rdečih in modrih vozlišč.
+>    Naj bo G = (V, E) graf. Vsako vozlišče v ∈ V je obarvano rdeče ali modro. Najti želimo največji povezani podgraf G' = (V', E'), ki ima enako število rdečih in modrih         vozlišč.
     Velikost podgrafa je število njegovih vozlišč. Ta problem je v splošnem NP-težek, kar pomeni da ga ne moremo
     rešiti v polinomskem času.
-    Osredotočili se bomo na optimalen algoritem za reševanje problema na mrežah oblike $1 \times n$ (pot), $2 \times n$, 
-    $3 \times n$ in $4 \times n$.
-    Naš algoritem bomo testirali na grafih, kjer bomo vožlišča obarvali rdeče z verjetnostjo $p \in (0,1)$ 
-    in modro z verjetnostjo $1 - p$.
-
+    Osredotočili se bomo na optimalen algoritem za reševanje problema na mrežah oblike 1xn (pot), 2xn, 
+    3xn in 4xn.
+    Naš algoritem bomo testirali na grafih, kjer bomo vožlišča obarvali rdeče z verjetnostjo 0 < p < 1, 
+    in modro z verjetnostjo 1 - p.
 ---
-## Zaženi program
-<ol>
-    <li>Kolnirajte repozitorij</li>
-    <li>Poženite vmesnik.py z ukazom v terminalu (pot kjer se nahaja repozitorij/ $ `python vmesnik.py` )</li>
-</ol>
 
-### Opombe
+## Sestava repozitorija
 
-
-* pomebna koda ter funkcije se nahajajo v `model.py`
-* uporabili smo pakete:
-    * random
-    * itertools
-
+* ALGO_BCS
+    * Vsebuje model `modelBCS.py` za glavni algoritem `algoritem.py` in nekaj primerov `primeri.py`.
+* Kratek_opis
+    * Vsebuje katrko poročilo `opis.pdf`.
+* Poročilo
+    * Vsebuje glavno poročilo z ekperimenti `porocilo.pdf`.
+* Eksperimenti
+    * Vsebuje excel datoteke s podatki testiranj in datoteko `analiza.R` za analizo in vizualizacijo v R-ju.
+* program
+    * v pripravi za predstavitev...
 
