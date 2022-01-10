@@ -135,6 +135,8 @@ Ljubljana, 2022}
     Algoritem sprejme kot vhod mrežo $m \times n$, kjer je vsako vozlišče
     obarvano bodisi modro (B) bodisi rdeče (R). 
 
+    \vline
+
     Definirajmo spremenljivke:
     \begin{itemize}
         \item 
@@ -142,21 +144,30 @@ Ljubljana, 2022}
         \item 
         $p_{ijv}$ je največji podgraf do $i$-tega stolpca z razliko $j$, kjer je v zadnjem stolpcu uporabljeni vzorec $v$   
     \end{itemize}
-    
+
+    Začetni pogoji so:
+    \begin{itemize}
+        \item 
+        $p_{10v} = 0$
+        \item 
+        $ p_{1jv} =
+            \begin{cases}
+            |v|, & \text{če}\ j = \sum_{k \in v}x_{1k} \\
+            -\infty, & \text{če}\ j \ne \sum_{k \in v}x_{1k} \quad$ in $\quad j\ne 0
+            \end{cases}
+        $
+        \item 
+        $p_{ijv} = -\infty$, če je $\quad |j| > i |G|$ 
+    \end{itemize}
+
+    Rekurzivne enačbe:
     $$
-    \begin{aligned}
-    &\textnormal{Začetni pogoji so:} \\
-    &p_{10v} = 0 \\    
-    &p_{1jv} = |v|, \text{če velja:} \quad j = \sum_{k \in v}x_{1k} \\ 
-    &p_{1jv} = -\infty, \text{če velja:} \quad j \ne \sum_{k \in v}x_{1k} \quad \textnormal{in} \quad j\ne 0 \\ 
-    &p_{ijv} = -\infty \quad \text{če $|j| > i |G|$} \\
-    &\textnormal{Rekurzivne enačbe:} \\
-    &p_{ijv} = |v| + \max\left(\{p_{i-1, j + \sum_{k \in v} x_{ik}, u} \mid u \sim v\} \cup \{-|v| \mid j = 0\}\right) \quad (-i|G| \le j \le i|G|) \\
-    &\textnormal{Optimalna rešitev:} \\
-    &p^* = \max\{p_{i0v} \mid i \le 1 \le n, v \text{ povezan}\}
-    \end{aligned}
+    p_{ijv} = |v| + \max\left(\{p_{i-1, j - \sum_{k \in v} x_{ik}, u} \mid u \sim v\} \cup \{-|v| \mid j = 0\}\right) ,\ (-i|G| \le j \le i|G|)
     $$
 
+    Optimalna rešitev:
+
+    $$p^* = \max\{p_{i0v} \mid i \le 1 \le n, v \text{ povezan}\}$$
 
 Za programerski del naloge smo uporabljali Python. V nadaljevanju so predstavljenje glavne funkcije, 
 ki smo jih za ta del definirali.
