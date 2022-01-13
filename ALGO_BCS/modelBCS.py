@@ -101,6 +101,7 @@ def precisti_sez(p, sez, zacetek, dolzina):
 
     sez = str(sez)
     sez = sez.replace(" 2", "2").replace(" 3", "3").replace(" 4", "4")
+    sez = sez.replace("1], ", "1,").replace("2], ", "2,").replace("3], ", "3,")
     niz = ""
     for i in sez:
         if i in "[]":

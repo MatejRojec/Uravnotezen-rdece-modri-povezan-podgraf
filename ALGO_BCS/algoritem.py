@@ -83,4 +83,3 @@ def max_BCS(G):
     indeks = st_vozlisc.index(maxi)
     podgraf = precisti_sez(maxi, sez_vozlisc[indeks], l[indeks], B.n - 1)
     return(maxi, podgraf)
-    
