@@ -21,5 +21,9 @@
 * Eksperimenti
     * Vsebuje excel datoteke s podatki testiranj in datoteko `analiza.R` za analizo in vizualizacijo v R-ju.
 * program
-    * v pripravi za predstavitev...
+    * Vsebuje skripto `model.py`, ker so zbrane potrebne funkcije za delovanje algoritma in algoritem, ter `vmesnik.py`, ki vsebuje kodo programčka za lažjo predstavo izida BCS algoritma.
 
+
+## Zagon programčka
+   1) Kloneraj repozitori
+   2) Poženi skriptp `vmesnik.py`
