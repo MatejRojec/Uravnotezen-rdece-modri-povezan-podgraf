@@ -1,7 +1,90 @@
 import random
 from itertools import combinations
 
-#G je seznam stolpcev z utezmi (= [[stolpec 1 z z uezmi], [stolpec 2 z utezmi], ...])
+VZORCI = {
+    1 :  [
+        [[[1]]]
+        ],
+    2 :  [ 
+        [[[1]]], 
+        [[[2]]], 
+        [[[1,2]]]],
+    3 : [
+        [[[1]]], 
+        [[[2]]], 
+        [[[3]]], 
+        [[[1,2]]], 
+        [[[1],[3]]], 
+        [[[1]],[[3]]], 
+        [[[2,3]]],
+        [[[1,2,3]]]
+    ],
+    4 : [
+        [[[1]]],
+        [[[2]]],
+        [[[3]]],
+        [[[4]]],
+        [[[1,2]]],
+        [[[1],[3]]],
+        [[[1]],[[3]]],
+        [[[1],[4]]],
+        [[[1]],[[4]]],
+        [[[2,3]]],
+        [[[2],[4]]],
+        [[[2]],[[4]]],
+        [[[3,4]]],
+        [[[1,2,3]]],
+        [[[1,2],[4]]],
+        [[[1,2]],[[4]]],
+        [[[1],[3,4]]],
+        [[[1]],[[3,4]]],
+        [[[2,3,4]]],
+        [[[1,2,3,4]]]
+    ]
+}
+
+
+class BCS:
+
+    def __init__(self, G):
+        self.G = G
+        self.n = len(G) # st stolcev
+        self.m = len(G[0]) # st vrstic
+        self.VZ = VZORCI[self.m]
+    
+    def vrednost_vzorca(self, vzorec, i): #vrednost vzorca v i-tem stolcu grafa G
+        # to vrne stali vzorec
+        result = []
+        for list1 in vzorec:
+            for j in list1:
+                for l in j:
+                    result.append(l)
+        vsota = 0        
+        stolpec = self.G[i]
+        for el in result:
+            vsota += stolpec[el-1]
+        return(vsota, len(result))
+    
+    def generiraj_p_ijv(self): 
+        self.p = []
+        len_v = len(self.VZ)
+        for i in range(self.n):
+            self.p.append([])
+            for j in range((2*self.n*self.m)+1): #
+                self.p[i].append([[] for _ in range(len_v)])
+        return(self.p)
+    
+    def generiraj_V(self): 
+        self.V = []
+        len_v = len(self.VZ)
+        for i in range(self.n):
+            self.V.append([])
+            for j in range((2*self.n*self.m)+1): #
+                self.V[i].append([[] for _ in range(len_v)])
+        return(self.V)
+
+
+# ustvari graf G
 def generiraj_G(n, m, p): 
     # n...stevilo stolcev
     # m...stevilo vrstic
@@ -11,131 +94,125 @@ def generiraj_G(n, m, p):
     for i in range(n):
         G.append(random.choices(vrednost, weights = [p, 1-p], k = m))
     return(G)
-
-#print(generiraj_G(3,2, 0.5))
-#G1 = [[1, -1], [-1, 1], [1, -1]]
-
-def generiraj_vzorec(G): # generera vse mozne vzorce glede na stevilo vrstic
-    n = len(G) # st stolcev
-    m = len(G[0]) # st vrstic
-    a = [i for i in range(1, m)]
-    sez = [i+1 for i in range(m)]
-    return sum([list(map(list, combinations(sez, i))) for i in range(len(sez) + 1)], [])[1:]
-
-#print(generiraj_vzorec(G1))
-# [[1], [2], [1, 2]]
-
-def vrednost_vzorca(G, vzorec, i): #vrednost vzorca v i-tem stolcu grafa G
-    vsota = 0
-    stolpec = G[i]
-    for el in vzorec:
-        vsota += stolpec[el-1]
-    return(vsota)
-
-def ujemanje(v1, v2): #ce se vzorec v1 ujema z vzorcem v2
-    for el in v2:
-        if el in v1:
-            return True
-    return False
-
-# nam da prazen seznam ki ga bomo polnili [ [ [ []*st_vzorcev]* največja meja j]*st_stolpcev]
-def generiraj_p_ijv(G): 
-    p = []
-    n = len(G) # st stolpcev
-    m = len(G[0]) # st vrsic 
-    len_v = len(generiraj_vzorec(G))
-    for i in range(n):
-        p.append([])
-        for j in range((2*n*m)+1): #
-            p[i].append([[] for _ in range(len_v)])
-    return(p)
-
-def povezan(vzorec): # vrne ali je vzorec vzorec povezan
-    if len(vzorec) == 1:
-        return True
-    else:
-        i = vzorec[0]
-        for el in vzorec:
-            if i == el:
-                pass
-            else:
-                return False
-            i += 1
-        return True
-
-# poračuna vse mozne p_ijv 
-def P(G):
-    n = len(G) # st stolpcev
-    m = len(G[0]) # st vrsic 
-    vzorec = generiraj_vzorec(G)
-    p = generiraj_p_ijv(G)
     
+
+# pocisti seznam 
+def precisti_sez(p, sez, zacetek, dolzina):
+    if p == 0:
+        return([])
+
+    sez = str(sez)
+    sez = sez.replace(" 2", "2").replace(" 3", "3").replace(" 4", "4")
+    sez = sez.replace("1], ", "1,").replace("2], ", "2,").replace("3], ", "3,")
+    niz = ""
+    for i in sez:
+        if i in "[]":
+            pass
+        else:
+            niz += i
+    s = niz.split(" ")
+    l = []
+    for el in s:
+        if el != ",":
+            if el[-1] == ",":
+                el = el[:-1]
+            l.append(el)
+    listic = []
+    for el in l:
+        v = el.split(",")
+        s = []
+        for i in v:
+            s.append(int(i))
+        listic.append(s)
+    j = len(listic)-1
+    for _ in range(zacetek-j):
+        listic = [[]] + listic
+    if dolzina-zacetek != 0:
+        for _ in range(dolzina-zacetek):
+            listic.append([] )
+    return(listic)
+
+
+def P(G):
+    B = BCS(G)
+    n = B.n # st solpcev
+    m = B.m # st vrsic 
+    vzorec = B.VZ
+    p = B.generiraj_p_ijv()
+    V = B.generiraj_V()
     for i in range(n): # za vsak stolpec
-        for j in range((2*n*m) + 1):
+        for j in range((2 * n * m) + 1):
             for v in range(len(vzorec)):
                 vz = vzorec[v] #potegnemo vzorec
-                fj = j - n*m # pretvorimo
-                vr_vz = vrednost_vzorca(G, vz, i)
+                fj = j - n * m # pretvorimo
+                vr_vz, dolzina_v = B.vrednost_vzorca(vz, i)
 
                 if i == 0:
-                    if  vr_vz == fj:
-                        p[i][j][v] = len(vz)
-                    else:
+                    if any(len(d) > 1 for d in vzorec[v]):
                         p[i][j][v] = float('-inf')
+                        V[i][j][v] = [[]]
+                    else:
+                        if  vr_vz == fj:
+                            p[i][j][v] = dolzina_v
+                            V[i][j][v] = vz
+                        elif fj == 0:
+                            p[i][j][v] = 0
+                            V[i][j][v] = [[]]
+                        else:
+                            p[i][j][v] = float('-inf')
+                            V[i][j][v] = [[]]
 
-                elif abs(fj) > (i + 1)*m:
+                elif abs(fj) > (i + 1) * m:
                     p[i][j][v] = float('-inf')
+                    V[i][j][v] = [[]]
 
                 else:
-                    kandidati = [float('-inf')]
+                    kandidati_vozlisc = [[[]]]
+                    if fj != 0:
+                        kandidati = [float('-inf')]
+                    else:
+                        kandidati = [0]    
                     for u in range(len(vzorec)):
-                        if abs(fj - vr_vz) >= (i+1)*m: # nam zagotovi da ne pademo ven
+                        if abs(fj - vr_vz) >= (i + 1)*m: # nam zagotovi da ne pademo ven
                             continue
                         else:
-                            if ujemanje(vzorec[u], vz):
-                                if povezan(vzorec[u]): # vzamemo povezanega da ne prde do tezav pri max(pijv)
-                                    st_vozlisc = len(vz) + p[i-1][j - vr_vz][u]
+                            du = [set(sum(d, [])) for d in vzorec[u]] # deli u
+                            vv = set(sum(sum(vzorec[v], []),[])) # množica vozlišč v
+                            pogoj1 = all(any(x in vv for x in d) for d in du)
+                            pogoj2 = all(any(all(any(x in c for x in e) for c in d) for e in du) for d in vzorec[v] if len(d) > 1)
+                            if pogoj1 and pogoj2:
+                                if any(len(d) > 1 for d in vzorec[v]) and p[i - 1][j - vr_vz][u] == 0:
+                                    continue
+                                else:
+                                    st_vozlisc = dolzina_v + p[i - 1][j - vr_vz][u]
                                     kandidati.append(st_vozlisc)
-                    p[i][j][v] = max(kandidati)
-    return(p)
+                                    kandidati_vozlisc.append([V[i-1][j - vr_vz][u], vz])
+                    max_kandidat = max(kandidati)
+                    indeks = kandidati.index(max_kandidat)
+                    p[i][j][v] = max_kandidat
+                    V[i][j][v] = kandidati_vozlisc[indeks]
+    return(p, V)
 
-# izberemo najvecji p_i0v; kjer je v povezan 
+
+# poisce najvecji p_i0v
 def max_BCS(G):
-    p = P(G)
+    B = BCS(G)
+    p, V = P(G)
     r = len(p) # stolpec
     q = len(p[0]) # st. mej za razlike j
     s = len(p[0][0]) # st. vzorcev
-    vzorci = generiraj_vzorec(G)
+    vzorci = B.VZ
     st_vozlisc = []
+    sez_vozlisc = []
     j_0 = q//2 #potegnemo j=0
+    l = []
     for i in range(r):
         for v in range(s):
-            if povezan(vzorci[v]):
-                if p[i][j_0][v] == float("-inf"):
-                    p[i][j_0][v] = 0
-                else:
-                    #print(vzorci[v], p[i][j_0][v])
-                    st_vozlisc.append(p[i][j_0][v])
-    try:
-        return(max(st_vozlisc))
-    except ValueError:
-        niz = "Graf G ne vsebuje nobenega uravnoteženega podgrafa"
-        #print("Graf G ne vsebuje nobenega uravnoteženega podgrafa")
-        return(niz)
-
-def prikaz(n, m, p):
-    G = generiraj_G(n, m, p)
-    p = max_BCS(G)
-    print("G: ")
-    print()
-    # izpis grafa
-    i = 0
-    for j in range(len(G[0])):
-        vrstica = [el[j] for el in G]
-        print(" -- ".join([str(el) for el in vrstica]).replace("-1", "(-)").replace("1", "(+)"))
-        if j != len(G[0])-1:
-            vmesna_vrstica = [" | " for _ in G]
-            print("    ".join(vmesna_vrstica))
-    print()
-    print("Stevilo vozlisc največjega BCS: ", p)
-
+            if len(vzorci[v]) == 1:
+                st_vozlisc.append(p[i][j_0][v])
+                sez_vozlisc.append(V[i][j_0][v])
+                l.append(i)
+    maxi = max(st_vozlisc)
+    indeks = st_vozlisc.index(maxi)
+    podgraf = precisti_sez(maxi, sez_vozlisc[indeks], l[indeks], B.n - 1)
+    return(maxi, podgraf)
