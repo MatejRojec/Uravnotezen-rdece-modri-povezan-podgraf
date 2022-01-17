@@ -21,7 +21,7 @@ def prikaz(n, m, p):
                 vmesna_vrstica = [" | " for _ in G]
                 print("    ".join(vmesna_vrstica))
         print()
-        print("Stevilo vozlisc največjega BCS: ", st)
+        print("Maximum size of BCS: ", st)
     else:
         # za vsak stolpec
         for i in range(len(G)):
@@ -40,7 +40,7 @@ def prikaz(n, m, p):
                 vmesna_vrstica = [" | " for _ in G]
                 print("    ".join(vmesna_vrstica))
         print()
-        print("Stevilo vozlisc največjega BCS: ", st)
+        print("Maximum size of BCS: ", st)
 
 
 
